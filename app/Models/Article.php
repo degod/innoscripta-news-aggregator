@@ -12,7 +12,7 @@ class Article extends Model
 
     protected $fillable = [
         'uuid',
-        'source_uuid',
+        'source',
         'author',
         'title',
         'description',
@@ -37,10 +37,5 @@ class Article extends Model
                 $article->uuid = Str::uuid()->toString();
             }
         });
-    }
-
-    public function source()
-    {
-        return $this->belongsTo(Source::class, 'source_uuid', 'uuid');
     }
 }

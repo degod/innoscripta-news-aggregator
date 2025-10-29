@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->char('source_uuid', 36);
+            $table->char('source', 105);
             $table->string('author')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
@@ -24,8 +24,6 @@ return new class extends Migration
             $table->dateTime('published_at');
             $table->json('metadata')->nullable();
             $table->timestamps();
-
-            $table->foreign('source_uuid')->references('uuid')->on('sources')->onDelete('cascade');
         });
     }
 

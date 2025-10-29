@@ -13,11 +13,11 @@ class ArticleFactory extends Factory
 
     public function definition(): array
     {
-        $source = Source::factory()->create();
+        $source = Source::inRandomOrder()->first() ?? Source::factory()->create();
 
         return [
             'uuid' => Str::uuid()->toString(),
-            'source_uuid' => $source->uuid,
+            'source' => $source->name,
             'author' => $this->faker->name(),
             'title' => $this->faker->sentence(5),
             'description' => $this->faker->paragraph(),

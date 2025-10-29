@@ -27,4 +27,9 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $this->article->where('source_uuid', $sourceUuid)->get();
     }
+
+    public function existsByUrl(string $url): bool
+    {
+        return $this->article->where('source_url', $url)->exists();
+    }
 }
