@@ -23,13 +23,13 @@ class ArticleRepository implements ArticleRepositoryInterface
         return $this->article->where('uuid', $uuid)->first();
     }
 
-    public function findBySource(string $sourceUuid)
+    public function findBySource(string $sourceName)
     {
-        return $this->article->where('source_uuid', $sourceUuid)->get();
+        return $this->article->where('source', $sourceName)->get();
     }
 
     public function existsByUrl(string $url): bool
     {
-        return $this->article->where('source_url', $url)->exists();
+        return $this->article->where('url', $url)->exists();
     }
 }

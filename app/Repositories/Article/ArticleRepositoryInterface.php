@@ -9,6 +9,6 @@ interface ArticleRepositoryInterface
     public function create(array $data): Article;
     public function all();
     public function findByUuid(string $uuid): ?Article;
-    public function findBySource(string $sourceUuid);
+    public function findBySource(string $sourceName);
     public function existsByUrl(string $url): bool;
 }

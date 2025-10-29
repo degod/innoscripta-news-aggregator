@@ -46,4 +46,78 @@ class NewsAggregatorService
             ]);
         }
     }
+
+    /**
+     * Fetch and store articles from the New York Times API
+     */
+    public function fetchFromNewYorkTimes(): void
+    {
+        $apiKey = config('services.nytimes.key');
+        $response = Http::get("https://api.nytimes.com/svc/topstories/v2/world.json", [
+            'api-key' => $apiKey,
+        ]);
+
+        if (! $response->successful()) {
+            return;
+        }
+
+        $data = $response->json();
+
+        foreach ($data['results'] ?? [] as $articleData) {
+            if ($this->articleRepository->existsByUrl($articleData['url'])) {
+                continue;
+            }
+
+            $this->articleRepository->create([
+                'uuid' => Str::uuid(),
+                'source' => 'New York Times',
+                'author' => $articleData['byline'] ?? null,
+                'title' => $articleData['title'],
+                'description' => $articleData['abstract'] ?? null,
+                'content' => null,
+                'url' => $articleData['url'],
+                'url_to_image' => $articleData['multimedia'][0]['url'] ?? null,
+                'published_at' => $articleData['published_date'],
+                'metadata' => $articleData,
+            ]);
+        }
+    }
+
+    /**
+     * Fetch and store articles from The Guardian API
+     */
+    public function fetchFromTheGuardian(): void
+    {
+        $apiKey = config('services.guardian.key');
+        $response = Http::get("https://content.guardianapis.com/search", [
+            'api-key' => $apiKey,
+            'show-fields' => 'byline,trailText,bodyText,thumbnail',
+            'page-size' => 10,
+        ]);
+
+        if (! $response->successful()) {
+            return;
+        }
+
+        $data = $response->json();
+
+        foreach ($data['response']['results'] ?? [] as $articleData) {
+            if ($this->articleRepository->existsByUrl($articleData['webUrl'])) {
+                continue;
+            }
+
+            $this->articleRepository->create([
+                'uuid' => Str::uuid(),
+                'source' => 'The Guardian',
+                'author' => $articleData['fields']['byline'] ?? null,
+                'title' => $articleData['webTitle'],
+                'description' => $articleData['fields']['trailText'] ?? null,
+                'content' => $articleData['fields']['bodyText'] ?? null,
+                'url' => $articleData['webUrl'],
+                'url_to_image' => $articleData['fields']['thumbnail'] ?? null,
+                'published_at' => $articleData['webPublicationDate'],
+                'metadata' => $articleData,
+            ]);
+        }
+    }
 }
