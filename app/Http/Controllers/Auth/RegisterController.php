@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Services\JwtAuthService;
 use App\Services\ResponseService;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @OA\Post(
@@ -33,30 +33,22 @@ class RegisterController extends Controller
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
+        private JwtAuthService $jwtAuth,
         private ResponseService $responseService
     ) {}
 
     public function __invoke(RegisterRequest $request)
     {
-        $validated = $request->validated();
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
 
-        $user = $this->userRepository->create([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+        $user = $this->userRepository->create($data);
+        $token = $this->jwtAuth->createToken($user);
+
+        return $this->responseService->success(201, 'User registered successfully', [
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'bearer'
         ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        return $this->responseService->success(
-            201,
-            'User registered successfully',
-            [
-                'user' => $user,
-                'access_token' => $token,
-                'token_type' => 'bearer'
-            ]
-        );
     }
 }
