@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Article;
-use App\Models\Source;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -13,12 +12,11 @@ class ArticleFactory extends Factory
 
     public function definition(): array
     {
-        $source = Source::inRandomOrder()->first() ?? Source::factory()->create();
-
         return [
             'uuid' => Str::uuid()->toString(),
-            'source' => $source->name,
+            'source' => $this->faker->name(),
             'author' => $this->faker->name(),
+            'category' => $this->faker->name(),
             'title' => $this->faker->sentence(5),
             'description' => $this->faker->paragraph(),
             'content' => $this->faker->paragraph(6),

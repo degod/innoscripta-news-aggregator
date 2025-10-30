@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->char('source', 105);
             $table->string('author')->nullable();
+            $table->string('category')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
             $table->longText('content')->nullable();

@@ -14,12 +14,10 @@ class ArticleRepositoryTest extends TestCase
 
     public function test_it_creates_article()
     {
-        $source = Source::factory()->create();
-
         $repo = $this->app->make(ArticleRepositoryInterface::class);
 
         $articleData = [
-            'source' => $source->name,
+            'source' => 'BBC News',
             'author' => 'John Doe',
             'title' => 'AI Revolutionizes News',
             'description' => 'How AI is changing journalism.',
@@ -33,6 +31,6 @@ class ArticleRepositoryTest extends TestCase
         $article = $repo->create($articleData);
 
         $this->assertDatabaseHas('articles', ['title' => 'AI Revolutionizes News']);
-        $this->assertEquals($source->name, $article->source);
+        $this->assertEquals('BBC News', $article->source);
     }
 }

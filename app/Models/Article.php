@@ -14,6 +14,7 @@ class Article extends Model
         'uuid',
         'source',
         'author',
+        'category',
         'title',
         'description',
         'content',

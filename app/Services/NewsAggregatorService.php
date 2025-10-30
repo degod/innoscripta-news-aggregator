@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\Article\ArticleRepositoryInterface;
-use App\Repositories\Source\SourceRepositoryInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -11,7 +10,6 @@ class NewsAggregatorService
 {
     public function __construct(
         private ArticleRepositoryInterface $articleRepository,
-        private SourceRepositoryInterface $sourceRepository,
     ) {}
 
     public function fetchFromNewsAPI(): void
