@@ -24,7 +24,6 @@ class NewsAggregatorService
         if (! $response->successful()) {
             return;
         }
-
         $data = $response->json();
 
         foreach ($data['articles'] as $articleData) {
@@ -58,7 +57,6 @@ class NewsAggregatorService
         if (! $response->successful()) {
             return;
         }
-
         $data = $response->json();
 
         foreach ($data['results'] ?? [] as $articleData) {
@@ -70,6 +68,7 @@ class NewsAggregatorService
                 'uuid' => Str::uuid(),
                 'source' => 'New York Times',
                 'author' => $articleData['byline'] ?? null,
+                'category' => $articleData['section'] ?? null,
                 'title' => $articleData['title'],
                 'description' => $articleData['abstract'] ?? null,
                 'content' => null,
@@ -96,7 +95,6 @@ class NewsAggregatorService
         if (! $response->successful()) {
             return;
         }
-
         $data = $response->json();
 
         foreach ($data['response']['results'] ?? [] as $articleData) {
@@ -108,6 +106,7 @@ class NewsAggregatorService
                 'uuid' => Str::uuid(),
                 'source' => 'The Guardian',
                 'author' => $articleData['fields']['byline'] ?? null,
+                'category' => $articleData['sectionId'] ?? null,
                 'title' => $articleData['webTitle'],
                 'description' => $articleData['fields']['trailText'] ?? null,
                 'content' => $articleData['fields']['bodyText'] ?? null,

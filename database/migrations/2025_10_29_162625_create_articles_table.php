@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->longText('content')->nullable();
             $table->string('url')->unique();
-            $table->string('url_to_image')->nullable();
+            $table->string('url_to_image', 1000)->nullable();
             $table->dateTime('published_at');
             $table->json('metadata')->nullable();
             $table->timestamps();
