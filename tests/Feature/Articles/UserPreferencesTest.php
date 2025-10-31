@@ -88,7 +88,7 @@ class UserPreferencesTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $this->assertCount(1, $response->json('data')['data']);
-        $this->assertEquals($preferredArticle->id, $response->json('data')['data'][0]['id']);
+        $this->assertCount(1, $response->json('data'));
+        $this->assertEquals($preferredArticle->id, $response->json('data')[0]['id']);
     }
 }

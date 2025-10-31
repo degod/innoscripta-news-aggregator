@@ -64,14 +64,15 @@ class FetchArticlesTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => [
-                    'data',
-                    'links',
-                    'total'
-                ],
+                'data',
+                'error',
+                'errors',
+                'extra' => [
+                    'meta',
+                ]
             ]);
 
-        $this->assertCount(10, $response->json('data')['data']); // default pagination
+        $this->assertCount(10, $response->json('data')); // default pagination
     }
 
     public function test_it_can_filter_by_query()
@@ -82,8 +83,8 @@ class FetchArticlesTest extends TestCase
         $response = $this->getWithAuth(route('articles.index', ['q' => 'Laravel']));
 
         $response->assertStatus(200);
-        $this->assertCount(1, $response->json('data')['data']);
-        $this->assertEquals('Laravel Testing Rocks', $response->json('data')['data'][0]['title']);
+        $this->assertCount(1, $response->json('data'));
+        $this->assertEquals('Laravel Testing Rocks', $response->json('data')[0]['title']);
     }
 
     public function test_it_can_filter_by_source_category_author_and_date()
@@ -110,7 +111,7 @@ class FetchArticlesTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $this->assertCount(1, $response->json('data')['data']);
-        $this->assertEquals($article->id, $response->json('data')['data'][0]['id']);
+        $this->assertCount(1, $response->json('data'));
+        $this->assertEquals($article->id, $response->json('data')[0]['id']);
     }
 }

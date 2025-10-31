@@ -14,8 +14,8 @@ interface ArticleRepositoryInterface
     public function findBySource(string $sourceName);
     public function existsByUrl(string $url): bool;
 
-    public function filter(array $filters): LengthAwarePaginator;
-    public function filterByPreferences(array $preferences): LengthAwarePaginator;
+    public function filter(array $filters, int $perPage = 10): LengthAwarePaginator;
+    public function filterByPreferences(array $preferences, int $perPage = 10): LengthAwarePaginator;
     public function getDistinctSources(): Collection;
     public function getDistinctCategories(): Collection;
     public function getDistinctAuthors(): Collection;

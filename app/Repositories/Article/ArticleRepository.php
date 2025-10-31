@@ -35,7 +35,7 @@ class ArticleRepository implements ArticleRepositoryInterface
         return $this->article->where('url', $url)->exists();
     }
 
-    public function filter(array $filters): LengthAwarePaginator
+    public function filter(array $filters, int $perPage = 10): LengthAwarePaginator
     {
         return $this->article->newQuery()
             ->when($filters['q'] ?? null, function ($query, $q) {
@@ -65,10 +65,10 @@ class ArticleRepository implements ArticleRepositoryInterface
                 $query->whereDate('published_at', $date)
             )
             ->orderByDesc('published_at')
-            ->paginate(10);
+            ->paginate($perPage);
     }
 
-    public function filterByPreferences(array $preferences): LengthAwarePaginator
+    public function filterByPreferences(array $preferences, int $perPage = 10): LengthAwarePaginator
     {
         return $this->article->newQuery()
             ->when(
@@ -87,7 +87,7 @@ class ArticleRepository implements ArticleRepositoryInterface
                 $query->whereIn('author', $preferences['authors'])
             )
             ->orderByDesc('published_at')
-            ->paginate(10);
+            ->paginate($perPage);
     }
 
     public function getDistinctSources(): Collection

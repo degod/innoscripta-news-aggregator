@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Article\ListArticlesRequest;
 use App\Repositories\Article\ArticleRepositoryInterface;
 use App\Services\ResponseService;
 
@@ -13,14 +13,14 @@ use App\Services\ResponseService;
  *     tags={"Articles"},
  *     security={{"bearerAuth":{}}},
  *     summary="List or search articles",
- *     description="Retrieve paginated list of articles with optional filters for query, category, source, author, and date range.",
+ *     description="Retrieve paginated list of articles with optional filters for query, category, source, author, and date.",
  *     @OA\Parameter(name="q", in="query", description="Search keyword", required=false, @OA\Schema(type="string")),
  *     @OA\Parameter(name="category", in="query", description="Filter by category", required=false, @OA\Schema(type="string")),
  *     @OA\Parameter(name="source", in="query", description="Filter by source", required=false, @OA\Schema(type="string")),
  *     @OA\Parameter(name="author", in="query", description="Filter by author", required=false, @OA\Schema(type="string")),
  *     @OA\Parameter(name="date", in="query", description="Filter by date (YYYY-MM-DD)", required=false, @OA\Schema(type="string")),
- *     @OA\Response(response=200, description="List of filtered articles"),
- *     @OA\Response(response=404, description="No articles found matching the criteria")
+ *     @OA\Parameter(name="per_page", in="query", description="Items per page (1-100)", required=false, @OA\Schema(type="integer")),
+ *     @OA\Response(response=200, description="List of filtered articles")
  * )
  */
 class ListArticlesController extends Controller
@@ -30,21 +30,13 @@ class ListArticlesController extends Controller
         private ResponseService $responseService
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(ListArticlesRequest $request)
     {
-        $filters = [
-            'q' => $request->query('q'),
-            'category' => $request->query('category'),
-            'source' => $request->query('source'),
-            'author' => $request->query('author'),
-            'date' => $request->query('date'),
-        ];
+        $filters = $request->filters();
+        $perPage = $request->perPage();
 
-        $articles = $this->articleRepository->filter($filters);
-        if ($articles->isEmpty()) {
-            return $this->responseService->error(404, 'No articles found matching the criteria');
-        }
+        $paginator = $this->articleRepository->filter($filters, $perPage);
 
-        return $this->responseService->success(200, 'Articles retrieved successfully', $articles);
+        return $this->responseService->successPaginated($paginator, 'Articles retrieved successfully', 200);
     }
 }
