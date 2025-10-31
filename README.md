@@ -75,7 +75,7 @@ php artisan jwt:secret
 php artisan migrate:fresh --seed
 ```
 
-## Running the application job and testing
+## RUNNING THE APPLICATION JOB AND TESTING
 
 -   Run the fetch command to get latest news (kindly use keys sent via email to populate provider keys in .env first)
 
@@ -95,7 +95,7 @@ php artisan schedule:work
 php artisan test
 ```
 
-## Accessing the API docs and database
+## ACCESSING THE API DOCS AND DATABASE
 
 -   To access application, visit
     `http://localhost:9020`
@@ -111,7 +111,7 @@ php artisan test
 -   To access application's database, visit
     `http://localhost:9021`
 
-## Contributing
+## CONTRIBUTING
 
 Please open issues or pull requests against this repository. Follow existing code style and update tests where appropriate.
 
