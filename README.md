@@ -75,6 +75,8 @@ php artisan jwt:secret
 php artisan migrate:fresh --seed
 ```
 
+## Running the application job and testing
+
 -   Run the fetch command to get latest news (kindly use keys sent via email to populate provider keys in .env first)
 
 ```bash
@@ -93,6 +95,8 @@ php artisan schedule:work
 php artisan test
 ```
 
+## Accessing the API docs and database
+
 -   To access application, visit
     `http://localhost:9020`
 
@@ -106,3 +110,11 @@ php artisan test
 
 -   To access application's database, visit
     `http://localhost:9021`
+
+## Contributing
+
+Please open issues or pull requests against this repository. Follow existing code style and update tests where appropriate.
+
+---
+
+If you want, I can also add a short troubleshooting section based on any errors you see when trying these steps locally. What would you like me to add or change in this README?
