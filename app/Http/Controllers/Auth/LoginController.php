@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\JwtAuthService;
-use Illuminate\Support\Facades\Auth;
 use App\Services\ResponseService;
 use Illuminate\Support\Facades\Hash;
 

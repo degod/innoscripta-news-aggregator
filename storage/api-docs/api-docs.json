@@ -113,6 +113,10 @@
                                         "items": {
                                             "type": "string"
                                         }
+                                    },
+                                    "per_page": {
+                                        "type": "integer",
+                                        "example": 10
                                     }
                                 },
                                 "type": "object"
@@ -122,43 +126,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Filtered articles by preferences",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "integer",
-                                            "example": 200
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Articles retrieved successfully"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Filtered articles by preferences"
                     },
                     "422": {
                         "description": "Invalid or missing preferences",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No articles found matching preferences",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -181,7 +152,7 @@
                     "Articles"
                 ],
                 "summary": "List or search articles",
-                "description": "Retrieve paginated list of articles with optional filters for query, category, source, author, and date range.",
+                "description": "Retrieve paginated list of articles with optional filters for query, category, source, author, and date.",
                 "operationId": "bdfd4f76d05dff762d1beed3a2d45f22",
                 "parameters": [
                     {
@@ -228,14 +199,20 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (1-100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "List of filtered articles"
-                    },
-                    "404": {
-                        "description": "No articles found matching the criteria"
                     }
                 },
                 "security": [
