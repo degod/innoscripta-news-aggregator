@@ -13,9 +13,7 @@ class FetchNewsCommand extends Command
     public function handle(NewsAggregatorService $service)
     {
         $this->info('Fetching news...');
-        $service->fetchFromNewsAPI();
-        $service->fetchFromNewYorkTimes();
-        $service->fetchFromTheGuardian();
+        $service->orchestrate();
         $this->info('News successfully fetched!');
     }
 }
