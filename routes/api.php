@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Article\DistinctAuthorsController;
-use App\Http\Controllers\Article\DistinctCategoriesController;
-use App\Http\Controllers\Article\DistinctSourcesController;
+use App\Http\Controllers\Article\DistinctAttributesController;
 use App\Http\Controllers\Article\FilterArticlesByPreferencesController;
 use App\Http\Controllers\Article\ListArticlesController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +17,9 @@ Route::prefix('v1/')->group(function () {
         Route::prefix('articles')->group(function () {
             Route::get('/', ListArticlesController::class)->name('articles.index');
             Route::post('/preferences', FilterArticlesByPreferencesController::class)->name('articles.preferences');
-            Route::get('/sources', DistinctSourcesController::class)->name('articles.sources');
-            Route::get('/categories', DistinctCategoriesController::class)->name('articles.categories');
-            Route::get('/authors', DistinctAuthorsController::class)->name('articles.authors');
+            Route::get('/{attribute}', DistinctAttributesController::class)
+                ->whereIn('attribute', ['sources','categories','authors'])
+                ->name('articles.distinct');
         });
     });
 });

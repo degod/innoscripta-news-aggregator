@@ -19,108 +19,30 @@
         }
     ],
     "paths": {
-        "/api/v1/articles/authors": {
+        "/api/v1/articles/{attribute}": {
             "get": {
                 "tags": [
                     "Articles"
                 ],
-                "summary": "Get distinct article authors",
-                "description": "Returns a list of unique authors from the articles table",
-                "operationId": "getDistinctAuthors",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string",
-                                                "example": "John Doe"
-                                            }
-                                        },
-                                        "error": {
-                                            "type": "string",
-                                            "example": null
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No article author found"
-                    }
-                },
-                "security": [
+                "summary": "Get distinct article attributes",
+                "description": "Returns a list of unique values for the given attribute (sources, categories, authors)",
+                "operationId": "getDistinctArticleAttributes",
+                "parameters": [
                     {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/articles/categories": {
-            "get": {
-                "tags": [
-                    "Articles"
-                ],
-                "summary": "Get distinct article categories",
-                "description": "Returns a list of unique categories from the articles table",
-                "operationId": "getDistinctCategories",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string",
-                                                "example": "Technology"
-                                            }
-                                        },
-                                        "error": {
-                                            "type": "string",
-                                            "example": null
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
+                        "name": "attribute",
+                        "in": "path",
+                        "description": "Attribute name: sources|categories|authors",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "sources",
+                                "categories",
+                                "authors"
+                            ]
                         }
-                    },
-                    "404": {
-                        "description": "No article category found"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/articles/sources": {
-            "get": {
-                "tags": [
-                    "Articles"
                 ],
-                "summary": "Get distinct article sources",
-                "description": "Returns a list of unique sources from the articles table",
-                "operationId": "getDistinctSources",
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -150,7 +72,7 @@
                         }
                     },
                     "404": {
-                        "description": "No article source found"
+                        "description": "No attribute values found or invalid attribute"
                     }
                 },
                 "security": [

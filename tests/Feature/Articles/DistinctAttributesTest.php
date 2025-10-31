@@ -62,7 +62,7 @@ class DistinctAttributesTest extends TestCase
         Article::factory()->create(['source' => 'BBC']);
         Article::factory()->create(['source' => 'CNN']); // duplicate
 
-        $response = $this->getWithAuth(route('articles.sources'));
+        $response = $this->getWithAuth(route('articles.distinct', ['attribute' => 'sources']));
         $response->assertStatus(200);
         $this->assertEqualsCanonicalizing(['CNN', 'BBC'], $response->json()['data']);
     }
@@ -73,7 +73,7 @@ class DistinctAttributesTest extends TestCase
         Article::factory()->create(['category' => 'Business']);
         Article::factory()->create(['category' => 'Tech']);
 
-        $response = $this->getWithAuth(route('articles.categories'));
+        $response = $this->getWithAuth(route('articles.distinct', ['attribute' => 'categories']));
         $response->assertStatus(200);
         $this->assertEqualsCanonicalizing(['Tech', 'Business'], $response->json()['data']);
     }
@@ -84,7 +84,7 @@ class DistinctAttributesTest extends TestCase
         Article::factory()->create(['author' => 'Jane Doe']);
         Article::factory()->create(['author' => 'John Doe']);
 
-        $response = $this->getWithAuth(route('articles.authors'));
+        $response = $this->getWithAuth(route('articles.distinct', ['attribute' => 'authors']));
         $response->assertStatus(200);
         $this->assertEqualsCanonicalizing(['John Doe', 'Jane Doe'], $response->json()['data']);
     }
