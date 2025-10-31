@@ -19,6 +19,7 @@ class DistinctCategoriesController extends Controller
      *     path="/api/v1/articles/categories",
      *     operationId="getDistinctCategories",
      *     tags={"Articles"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Get distinct article categories",
      *     description="Returns a list of unique categories from the articles table",
      *     @OA\Response(

@@ -19,6 +19,7 @@ class DistinctSourcesController extends Controller
      *     path="/api/v1/articles/sources",
      *     operationId="getDistinctSources",
      *     tags={"Articles"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Get distinct article sources",
      *     description="Returns a list of unique sources from the articles table",
      *     @OA\Response(

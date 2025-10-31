@@ -20,6 +20,13 @@ namespace App\Http\Controllers;
  *      url=L5_SWAGGER_CONST_HOST,
  *      description="News Aggregator API Server"
  * )
+ * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
  */
 abstract class Controller
 {

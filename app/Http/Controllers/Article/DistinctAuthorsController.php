@@ -19,6 +19,7 @@ class DistinctAuthorsController extends Controller
      *     path="/api/v1/articles/authors",
      *     operationId="getDistinctAuthors",
      *     tags={"Articles"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Get distinct article authors",
      *     description="Returns a list of unique authors from the articles table",
      *     @OA\Response(

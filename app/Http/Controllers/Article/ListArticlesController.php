@@ -11,6 +11,7 @@ use App\Services\ResponseService;
  * @OA\Get(
  *     path="/api/v1/articles",
  *     tags={"Articles"},
+ *     security={{"bearerAuth":{}}},
  *     summary="List or search articles",
  *     description="Retrieve paginated list of articles with optional filters for query, category, source, author, and date range.",
  *     @OA\Parameter(name="q", in="query", description="Search keyword", required=false, @OA\Schema(type="string")),

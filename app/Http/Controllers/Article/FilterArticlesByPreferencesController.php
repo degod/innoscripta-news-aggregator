@@ -11,6 +11,7 @@ use App\Services\ResponseService;
  * @OA\Post(
  *     path="/api/v1/articles/preferences",
  *     tags={"Articles"},
+ *     security={{"bearerAuth":{}}},
  *     summary="Retrieve articles based on user preferences",
  *     description="Accepts preferred sources, categories, or authors arrays to filter articles.",
  *     @OA\RequestBody(

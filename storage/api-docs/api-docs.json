@@ -58,7 +58,12 @@
                     "404": {
                         "description": "No article author found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/articles/categories": {
@@ -100,7 +105,12 @@
                     "404": {
                         "description": "No article category found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/articles/sources": {
@@ -142,7 +152,12 @@
                     "404": {
                         "description": "No article source found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/articles/preferences": {
@@ -230,7 +245,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/articles": {
@@ -295,7 +315,12 @@
                     "404": {
                         "description": "No articles found matching the criteria"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/auth/login": {
@@ -393,6 +418,15 @@
                         "description": "Validation failed"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },

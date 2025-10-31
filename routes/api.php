@@ -15,11 +15,13 @@ Route::prefix('v1/')->group(function () {
         Route::post('/login', LoginController::class)->name('auth.login');
     });
 
-    Route::prefix('articles')->group(function () {
-        Route::get('/', ListArticlesController::class)->name('articles.index');
-        Route::post('/preferences', FilterArticlesByPreferencesController::class)->name('articles.preferences');
-        Route::get('/sources', DistinctSourcesController::class)->name('articles.sources');
-        Route::get('/categories', DistinctCategoriesController::class)->name('articles.categories');
-        Route::get('/authors', DistinctAuthorsController::class)->name('articles.authors');
+    Route::middleware('jwt.auth')->group(function () {
+        Route::prefix('articles')->group(function () {
+            Route::get('/', ListArticlesController::class)->name('articles.index');
+            Route::post('/preferences', FilterArticlesByPreferencesController::class)->name('articles.preferences');
+            Route::get('/sources', DistinctSourcesController::class)->name('articles.sources');
+            Route::get('/categories', DistinctCategoriesController::class)->name('articles.categories');
+            Route::get('/authors', DistinctAuthorsController::class)->name('articles.authors');
+        });
     });
 });

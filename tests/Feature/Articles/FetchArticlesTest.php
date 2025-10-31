@@ -3,18 +3,64 @@
 namespace Tests\Feature\Article;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use DateTimeImmutable;
 
 class FetchArticlesTest extends TestCase
 {
     use RefreshDatabase;
 
+    private string $token;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Create and authenticate a user
+        $user = User::factory()->create([
+            'email' => 'user@example.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        // Create a JWT token
+        $config = Configuration::forSymmetricSigner(
+            new Sha256(),
+            InMemory::plainText(env('JWT_SECRET'))
+        );
+
+        $now = new DateTimeImmutable();
+        $token = $config->builder()
+            ->issuedBy(env('APP_NAME'))
+            ->permittedFor(env('APP_NAME'))
+            ->identifiedBy('test_jwt_token', true)
+            ->issuedAt($now)
+            ->canOnlyBeUsedAfter($now)
+            ->expiresAt($now->modify('+1 hour'))
+            ->relatedTo($user->id)
+            ->withClaim('user_uuid', $user->uuid)
+            ->getToken($config->signer(), $config->signingKey());
+
+        $this->token = $token->toString();
+    }
+
+    private function getWithAuth(string $route, array $params = [])
+    {
+        return $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->getJson($route, $params);
+    }
+
     public function test_it_returns_paginated_articles()
     {
         Article::factory()->count(15)->create();
 
-        $response = $this->getJson(route('articles.index'));
+        $response = $this->getWithAuth(route('articles.index'));
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -33,7 +79,7 @@ class FetchArticlesTest extends TestCase
         Article::factory()->create(['title' => 'Laravel Testing Rocks']);
         Article::factory()->create(['title' => 'Symfony Guide']);
 
-        $response = $this->getJson(route('articles.index', ['q' => 'Laravel']));
+        $response = $this->getWithAuth(route('articles.index', ['q' => 'Laravel']));
 
         $response->assertStatus(200);
         $this->assertCount(1, $response->json('data')['data']);
@@ -49,14 +95,14 @@ class FetchArticlesTest extends TestCase
             'published_at' => '2025-10-29',
         ]);
 
-        // Add other records that shouldn't match
+        // Non-matching records
         Article::factory()->count(3)->create([
             'source' => 'BBC',
             'category' => 'Health',
             'author' => 'Jane Doe',
         ]);
 
-        $response = $this->getJson(route('articles.index', [
+        $response = $this->getWithAuth(route('articles.index', [
             'source' => 'New York Times',
             'category' => 'Technology',
             'author' => 'John Doe',
