@@ -63,6 +63,10 @@ jobs:
           DB_DATABASE: news-aggregator
           DB_USERNAME: news-aggregator
           DB_PASSWORD: secret
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+          NYTIMES_KEY: ${{ secrets.NYTIMES_KEY }}
+          GUARDIAN_KEY: ${{ secrets.GUARDIAN_KEY }}
 
       - name: 🧹 Tear down Docker containers
         if: always()
