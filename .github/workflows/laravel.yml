@@ -55,7 +55,7 @@ jobs:
 
       - name: 🧪 Run test suite
         run: |
-          docker compose exec -T app php artisan test --no-interaction --stop-on-failure
+          docker compose exec -T app php artisan test --stop-on-failure
         env:
           DB_CONNECTION: mysql
           DB_HOST: db
