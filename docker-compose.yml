@@ -11,6 +11,19 @@ services:
       - ./:/var/www/html
     networks:
       - news-aggregator-network
+    env_file:
+      - .env
+    environment:
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      NEWSAPI_KEY: ${NEWSAPI_KEY}
+      NYTIMES_KEY: ${NYTIMES_KEY}
+      GUARDIAN_KEY: ${GUARDIAN_KEY}
     depends_on:
       - db
 
