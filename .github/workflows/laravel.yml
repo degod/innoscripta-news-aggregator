@@ -55,11 +55,12 @@ jobs:
 
       - name: 🧪 Run test suite
         run: |
-          export JWT_SECRET=${{ secrets.JWT_SECRET }}
-          export NEWSAPI_KEY=${{ secrets.NEWSAPI_KEY }}
-          export NYTIMES_KEY=${{ secrets.NYTIMES_KEY }}
-          export GUARDIAN_KEY=${{ secrets.GUARDIAN_KEY }}
-          docker compose exec -T app php artisan test --stop-on-failure
+          docker compose exec -T \
+            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            -e NEWSAPI_KEY="${{ secrets.NEWSAPI_KEY }}" \
+            -e NYTIMES_KEY="${{ secrets.NYTIMES_KEY }}" \
+            -e GUARDIAN_KEY="${{ secrets.GUARDIAN_KEY }}" \
+            app php artisan test --stop-on-failure
 
       - name: 🧹 Tear down Docker containers
         if: always()
